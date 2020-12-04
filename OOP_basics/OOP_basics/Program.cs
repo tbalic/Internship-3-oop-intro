@@ -44,6 +44,39 @@ namespace OOP_basics
             };
 
             var a = Menu();
+            switch (a)
+            {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    var b = AdditionalMenu();
+                    switch (b)
+                    {
+                        case 1:
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 7:
+                    break;
+                default:
+                    break;
+            }
 
 
         }
