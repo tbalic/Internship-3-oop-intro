@@ -65,6 +65,7 @@ namespace OOP_basics
             Console.WriteLine("4 - Dodavanje osobe na event");
             Console.WriteLine("5 - Brisanje osobe s eventa");
             Console.WriteLine("6 - Ispis detalja eventa");
+            Console.WriteLine("7 - Izlaz iz aplikacije");
             Console.WriteLine(" ");
             Console.WriteLine("Odaberite akciju upisujući njezin broj: ");
             int number;
