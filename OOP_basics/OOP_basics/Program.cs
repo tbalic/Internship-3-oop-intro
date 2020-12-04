@@ -80,6 +80,27 @@ namespace OOP_basics
             return finalChoiceOfAction;
         }
 
+        static int AdditionalMenu()
+        {
+            Console.WriteLine("1 - Ispis detalja eventa");
+            Console.WriteLine("2 - Popis osoba na eventu");
+            Console.WriteLine("3 - Ispis detalja eventa i popis osoba tog eventa");
+            Console.WriteLine("4 - Povratak na glavni izbornik");
+            Console.WriteLine(" ");
+            Console.WriteLine("Odaberite akciju upisujući njezin broj: ");
+            int number;
+            var secondChoiceOfAction = Console.ReadLine();
+            bool success = Int32.TryParse(secondChoiceOfAction, out number);
+            while (!success)
+            {
+                Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                secondChoiceOfAction = Console.ReadLine();
+                success = Int32.TryParse(secondChoiceOfAction, out number);
+            }
+            var result = int.Parse(secondChoiceOfAction);
+            return result;
+        }
+
     }
 
     
