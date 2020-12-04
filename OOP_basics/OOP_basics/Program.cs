@@ -25,27 +25,62 @@ namespace OOP_basics
             var ConcertList = new List<Person>() { seventhPerson, eighthPerson, ninthPerson };
             var StudySessionList = new List<Person> { tenthPerson, eleventhPerson, twelfthPerson };
 
-            string stringHelperOne = DecidingEventType.Coffee;
-            string stringHelperTwo = DecidingEventType.Lecture;
-            string stringHelperThree = DecidingEventType.Concert;
-            string stringHelperFour = eventType.StudySession;
+            var helpingVariableOne = 1;
+            var helpingVariableTwo = 2;
+            var helpingVariableThree = 3;
+            var helpingVariableFour = 4;
+
+            var firstEvent = new Event("Kava s prijateljima", helpingVariableOne, "1.1. u 10.00", "1.1. u 12.00");
+            var secondEvent = new Event("Predavanje na FESB-u", helpingVariableTwo, "10.1. u 17.00", "10.1. u 20.00");
+            var thirdEvent = new Event("Prljavo Kazalište u Areni", helpingVariableThree, "17.1. u 20.00", "17.1. u 23.00");
+            var fourthEvent = new Event("Repeticije", helpingVariableFour, "21.1. u 10.00", "21.1. u 12.00");
 
             var dictionary = new Dictionary<string, List<Person>>
             {
-                {stringHelperOne, CoffeeList },
-                {stringHelperTwo, LectureList },
-                {stringHelperThree, ConcertList },
-                {stringHelperFour, StudySessionList }
-
+                {firstEvent.Name , CoffeeList},
+                {secondEvent.Name, LectureList },
+                {thirdEvent.Name, ConcertList },
+                {fourthEvent.Name, StudySessionList }
             };
+
+            var a = Menu();
+
+
         }
 
         enum DecidingEventType
         {
-            Coffee,
-            Lecture,
-            Concert,
-            StudySession
+            Coffee = 1,
+            Lecture = 2,
+            Concert = 3,
+            StudySession = 4
         }
+
+        static int Menu()
+        {
+            Console.WriteLine("Izbornik");
+            Console.WriteLine("1 - Dodajte eventa");
+            Console.WriteLine("2 - Brisanje eventa");
+            Console.WriteLine("3 - Edit eventa");
+            Console.WriteLine("4 - Dodavanje osobe na event");
+            Console.WriteLine("5 - Brisanje osobe s eventa");
+            Console.WriteLine("6 - Ispis detalja eventa");
+            Console.WriteLine(" ");
+            Console.WriteLine("Odaberite akciju upisujući njezin broj: ");
+            int number;
+            var choiceOfAction = Console.ReadLine();
+            bool conversion = Int32.TryParse(choiceOfAction, out number);
+            while (! conversion)
+            {
+                Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                choiceOfAction = Console.ReadLine();
+                conversion= Int32.TryParse(choiceOfAction, out number);
+            }
+            var finalChoiceOfAction = int.Parse(choiceOfAction);
+            return finalChoiceOfAction;
+        }
+
     }
+
+    
 }

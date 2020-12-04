@@ -19,5 +19,6 @@ namespace OOP_basics
         public int EventType { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
+
     }
 }
