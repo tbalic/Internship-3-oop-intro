@@ -369,11 +369,11 @@ namespace OOP_basics
 
                             var b = 0;
 
-                            foreach(var pair in dictionary)
+                            foreach (var pair in dictionary)
                             {
-                                if((addedEvent.StartDateTime > pair.Key.StartDateTime) && (addedEvent.StartDateTime < pair.Key.EndDateTime))
+                                if ((addedEvent.StartDateTime > pair.Key.StartDateTime) && (addedEvent.StartDateTime < pair.Key.EndDateTime))
                                 {
-                                    b=0;
+                                    b = 0;
                                 }
                                 else
                                 {
@@ -389,7 +389,7 @@ namespace OOP_basics
                             {
                                 if ((addedEvent.EndDateTime > pair.Key.StartDateTime) && (addedEvent.EndDateTime < pair.Key.EndDateTime))
                                 {
-                                    c=0;
+                                    c = 0;
                                 }
                                 else
                                 {
@@ -401,9 +401,9 @@ namespace OOP_basics
                                 a++;
                             }
                             var d = 0;
-                            foreach(var pair in dictionary)
+                            foreach (var pair in dictionary)
                             {
-                                if((addedEvent.StartDateTime < pair.Key.StartDateTime) && (addedEvent.EndDateTime > pair.Key.EndDateTime))
+                                if ((addedEvent.StartDateTime < pair.Key.StartDateTime) && (addedEvent.EndDateTime > pair.Key.EndDateTime))
                                 {
                                     d = 0;
                                 }
@@ -423,7 +423,7 @@ namespace OOP_basics
                             else
                             {
                                 addedEvent = new Event(addedEventName, addedEventType, new DateTime(addedYear, addedMonth, addedDay, addedHour, addedMinutes, addedSeconds), new DateTime(addedEndYear, addedEndMonth, addedEndDay, addedEndHour, addedEndMinutes, addedEndSeconds));
-                                
+
                                 var AddedEventList = new List<Person>() { };
 
                                 dictionary.Add(addedEvent, AddedEventList);
@@ -438,13 +438,13 @@ namespace OOP_basics
                         Console.WriteLine("Odabrali ste brisanje eventa. Upišite ime eventa koji želite izbrisati.");
                         var deleteEventName = Console.ReadLine();
                         var counter = 0;
-                        var rememberValue = new Event("",Event.DecidingEventType.NoExistingType,new DateTime(0,0,0,0,0,0), new DateTime(0, 0, 0, 0, 0, 0));
-                        foreach(var pair in dictionary)
+                        var rememberValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(2020, 12, 4, 20, 00, 00), new DateTime(2020, 12, 4, 20, 10, 00));
+                        foreach (var pair in dictionary)
                         {
                             bool comparison = deleteEventName.Equals(pair.Key.Name, StringComparison.OrdinalIgnoreCase);
                             if (comparison)
                             {
-                                rememberValue = pair.Key; 
+                                var rememberValue = pair.Key;
                             }
                             else
                             {
@@ -571,7 +571,7 @@ namespace OOP_basics
                                         var editedEventType = editedType;
 
                                         rememberingValue.EventType = editedEventType;
-                                        
+
                                         editChoice = 0;
                                         break;
 
@@ -699,7 +699,7 @@ namespace OOP_basics
                                                 possible = 0;
                                             }
                                             var editedEndMonth = int.Parse(editingEndMonth);
-                                            possible++; 
+                                            possible++;
 
                                             Console.WriteLine("Unesite dan završavanja eventa");
                                             int integerSome;
@@ -746,7 +746,7 @@ namespace OOP_basics
 
                                             rememberingValue.EndDateTime = new DateTime(editedEndYear, editedEndMonth, editedEndDay, editedEndHour, editedEndMinutes, editedEndSeconds);
 
-                                            if(rememberingValue.EndDateTime < rememberingValue.StartDateTime)
+                                            if (rememberingValue.EndDateTime < rememberingValue.StartDateTime)
                                             {
                                                 possible = 0;
                                                 Console.WriteLine("Event ne može završiti prije no što počne. Molimo unesite ponovno vrijeme završavanja eventa.");
@@ -813,8 +813,179 @@ namespace OOP_basics
                         break;
 
                     case 4:
+                        Console.WriteLine("Odabrali ste dodavanje osobe na event");
+                        Console.WriteLine("Unesite ime osobe koju želite dodati (first name)");
+                        var addFirstName = Console.ReadLine();
+                        bool validName = addFirstName.Equals("", StringComparison.OrdinalIgnoreCase);
+                        while (validName)
+                        {
+                            Console.WriteLine("Niste unijeli ime. Molimo vas unesite ime osobe.");
+                            addFirstName = Console.ReadLine();
+                            validName = addFirstName.Equals("", StringComparison.OrdinalIgnoreCase);
+                        }
+                        var addedFirstName = addFirstName;
+                        Console.WriteLine("Unesite prezime osobe koju želite dodati. (last name)");
+                        var addLastName = Console.ReadLine();
+                        bool validLastName = addLastName.Equals("", StringComparison.OrdinalIgnoreCase);
+                        while (validLastName)
+                        {
+                            Console.WriteLine("Niste unijeli prezime. Molimo vas unesite prezimeime osobe.");
+                            addLastName = Console.ReadLine();
+                            validLastName = addLastName.Equals("", StringComparison.OrdinalIgnoreCase);
+                        }
+                        var addedLastName = addLastName;
+                        Console.WriteLine("Unesite OIB osobe koju želite dodati");
+                        var aprove = 0;
+                        var addedOIB = 0;
+                        while (aprove < 2)
+                        {
+                            int someIntegerValue;
+                            var addOIB = Console.ReadLine();
+                            bool conversionToOib = Int32.TryParse(addOIB, out someIntegerValue);
+                            while (!conversionToOib)
+                            {
+                                Console.WriteLine("Molimo upišite OIB BROJEM: ");
+                                addOIB = Console.ReadLine();
+                                conversionToOib = Int32.TryParse(addOIB, out someIntegerValue);
+                                aprove = 0;
+                            }
+                            var addingOIB = int.Parse(addOIB);
+                            aprove++;
+                            var helpAprove = 0;
+                            var countPeople = 0;
+                            foreach (var pair in dictionary)
+                            {
+                                for (var i = 0; i < pair.Value.Count; i++)
+                                {
+                                    if (pair.Value[i].OIB == addingOIB)
+                                    {
+                                        helpAprove = 0;
+                                    }
+                                    else
+                                    {
+                                        helpAprove++;
+                                    }
+                                    countPeople++;
+                                }
+                            }
+                            if (helpAprove == countPeople)
+                            {
+                                aprove++;
+                            }
+                            else
+                            {
+                                aprove = 0;
+                                Console.WriteLine("Već postoji osoba s ovim OIB-om. Molimo unesite novi OIB.");
+                            }
+                            addedOIB = addingOIB;
+                            if (aprove == 2)
+                            {
+                                break;
+                            }
+                        }
+                        var finalAddedOIB = addedOIB;
+                        Console.WriteLine("Upišite broj mobitela osobe koju želite dodati");
+                        var addPhoneNumber = Console.ReadLine();
+                        int some;
+                        bool checkingPhone = Int32.TryParse(addPhoneNumber, out some);
+                        while (!checkingPhone)
+                        {
+                            Console.WriteLine("Molimo upišite broj mobitela BROJEM: ");
+                            addPhoneNumber = Console.ReadLine();
+                            checkingPhone = Int32.TryParse(addPhoneNumber, out some);
+                        }
+                        var addedPhoneNumber = addPhoneNumber;
+                        Console.WriteLine("Upišite ime eventa na koji želite dodati osobu");
+                        var chooseEvent = Console.ReadLine();
+                        var control = 0;
+                        while (control < 1)
+                        {
+                            foreach (var pair in dictionary)
+                            {
+                                bool findingEvent = pair.Key.Name.Equals(chooseEvent, StringComparison.OrdinalIgnoreCase);
+                                while (!findingEvent)
+                                {
+                                    Console.WriteLine("Event nije pronađen. Molimo pokušajte ponovno");
+                                    chooseEvent = Console.ReadLine();
+                                    findingEvent = pair.Key.Name.Equals(chooseEvent, StringComparison.OrdinalIgnoreCase);
+                                    control = 0;
+                                }
+                            }
+                            control++;
+                        }
+                        var choosenEvent = chooseEvent;
+                        var saveValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(1000, 1, 1, 1, 1, 00), new DateTime(1000, 1, 1, 1, 1, 01))
+                        foreach (var pair in dictionary)
+                        {
+                            bool findEvent = pair.Key.Name.Equals(choosenEvent, StringComparison.OrdinalIgnoreCase);
+                            if (findEvent)
+                            {
+                                saveValue = pair.Key;
+                            }
+                        }
+                        dictionary[saveValue].Add(new Person(addedFirstName, addedLastName, finalAddedOIB, addedPhoneNumber));
+                        Console.WriteLine("Osoba dodana u odabrani event");
                         break;
                     case 5:
+                        Console.WriteLine("Upišite ime eventa s kojeg želite ukloniti osobu");
+                        var searchEvent = Console.ReadLine();
+                        var savingValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(2020, 12, 5, 9, 20, 00), new DateTime(2020, 12, 5, 9, 30, 00));
+                        var someVariable = 0;
+                        foreach (var pair in dictionary)
+                        {
+                            bool searchingEvent = pair.Key.Name.Equals(searchEvent, StringComparison.OrdinalIgnoreCase);
+                            if (searchingEvent)
+                            {
+                                savingValue = pair.Key;
+                                someVariable = 0;
+                            }
+                            else
+                            {
+                                someVariable++;
+                            }
+                        }
+                        if (someVariable == dictionary.Count)
+                        {
+                            Console.WriteLine("Event nije pronađen");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Unesite OIB osobe koju želite ukloniti s eventa");
+                            var removeOIB = Console.ReadLine();
+                            int integerValue;
+                            bool checkingValidOIB = Int32.TryParse(removeOIB, out integerValue);
+                            if (!checkingValidOIB)
+                            {
+                                Console.WriteLine("Molimo unesite OIB BROJEM");
+                                removeOIB = Console.ReadLine();
+                                checkingValidOIB = Int32.TryParse(removeOIB, out integerValue);
+                            }
+                            var removedOIB = removeOIB;
+                            var deletePerson = 0;
+                            var countHelp = 0;
+                            for (var i = 0, i< dictionary[savingValue].Count , i++)
+                            {
+                                if (dictionary[savingValue][i].OIB == removedOIB)
+                                {
+                                    deletePerson = i;
+                                    countHelp = 0;
+                                }
+                                else
+                                {
+                                    countHelp++;
+                                }
+                            }
+                            if (countHelp == dictionary[savingValue].Count)
+                            {
+                                Console.WriteLine("Osoba nije pronađena u odabranom eventu");
+                            }
+                            else
+                            {
+                                dictionary[savingValue].RemoveAt(deletePerson);
+                                Console.WriteLine("Osoba uspješno uklonjena iz eventa");
+                            }
+                        }
+                        
                         break;
                     case 6:
                         var branchVariable = AdditionalMenu();
@@ -823,10 +994,59 @@ namespace OOP_basics
                             switch (branchVariable)
                             {
                                 case 1:
+                                    Console.WriteLine("Odaberite ime eventa čije detalje želite vidjeti");
+                                    var detail = Console.ReadLine();
+                                    foreach(var pair in dictionary)
+                                    {
+                                        bool equal = pair.Key.Name.Equals(detail, StringComparison.OrdinalIgnoreCase);
+                                        if (equal)
+                                        {
+                                            Console.WriteLine(pair.Key.Name + " - " + pair.Key.EventType + " - " + pair.Key.StartDateTime + " - " + pair.Key.EndDateTime + " - " + (pair.Key.EndDateTime - pair.Key.StartDateTime) + " - " + pair.Value.Count);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Event nije pronađen");
+                                        }
+                                    }
                                     break;
                                 case 2:
+                                    Console.WriteLine("Odaberite ime eventa čije uzvanike želite vidjeti");
+                                    var guests = Console.ReadLine();
+                                    foreach (var pair in dictionary)
+                                    {
+                                        bool equality = pair.Key.Name.Equals(guests, StringComparison.OrdinalIgnoreCase);
+                                        if (equality)
+                                        {
+                                            for ( var i=1; i < pair.Value.Count+1; i++)
+                                            {
+                                                Console.WriteLine($"{i} - {pair.Value[i].FirstName} - {pair.Value[i].LastName} - {pair.Value[i].PhoneNumber}");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Event nije pronađen");
+                                        }
+                                    }
                                     break;
                                 case 3:
+                                    Console.WriteLine("Odaberite ime eventa čije detalje i popis uzvanika želite vidjeti");
+                                    var details = Console.ReadLine();
+                                    foreach (var pair in dictionary)
+                                    {
+                                        bool equals = pair.Key.Name.Equals(details, StringComparison.OrdinalIgnoreCase);
+                                        if (equals)
+                                        {
+                                            Console.WriteLine(pair.Key.Name + " - " + pair.Key.EventType + " - " + pair.Key.StartDateTime +" - " + pair.Key.EndDateTime + " - " + (pair.Key.EndDateTime - pair.Key.StartDateTime) + " - " + pair.Value.Count);
+                                            for (var i = 1; i < pair.Value.Count + 1; i++)
+                                            {
+                                                Console.WriteLine($"{i} - {pair.Value[i].FirstName} - {pair.Value[i].LastName} - {pair.Value[i].PhoneNumber}");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Event nije pronađen");
+                                        }
+                                    }
                                     break;
                                 case 4:
                                     branchVariable = 999;
@@ -954,7 +1174,12 @@ namespace OOP_basics
             var finalChoiceOfEditAction = int.Parse(choiceOfEditAction);
 
             return finalChoiceOfEditAction;
-        }
 
+        }
     }
+
 }
+
+
+
+

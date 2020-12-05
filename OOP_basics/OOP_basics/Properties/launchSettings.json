@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OOP_basics": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}
