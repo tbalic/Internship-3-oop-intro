@@ -438,13 +438,13 @@ namespace OOP_basics
                         Console.WriteLine("Odabrali ste brisanje eventa. Upišite ime eventa koji želite izbrisati.");
                         var deleteEventName = Console.ReadLine();
                         var counter = 0;
-                        var rememberValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(2020, 12, 4, 20, 00, 00), new DateTime(2020, 12, 4, 20, 10, 00));
+                        var rememberValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(2020, 12, 4, 17, 10, 00), new DateTime(2020, 12, 5, 23, 30, 00));
                         foreach (var pair in dictionary)
                         {
                             bool comparison = deleteEventName.Equals(pair.Key.Name, StringComparison.OrdinalIgnoreCase);
                             if (comparison)
                             {
-                                var rememberValue = pair.Key;
+                                rememberValue = pair.Key;
                             }
                             else
                             {
