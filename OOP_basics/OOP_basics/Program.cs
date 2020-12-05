@@ -25,26 +25,10 @@ namespace OOP_basics
             var ConcertList = new List<Person>() { seventhPerson, eighthPerson, ninthPerson };
             var StudySessionList = new List<Person> { tenthPerson, eleventhPerson, twelfthPerson };
 
-            var firstEvent = new Event("Kava s prijateljima");
-            var secondEvent = new Event("Predavanje na FESB-u");
-            var thirdEvent = new Event("Prljavo Kazalište u Areni");
-            var fourthEvent = new Event("Repeticije");
-
-            firstEvent.EventType = (int)DecidingEventType.Coffee;
-            secondEvent.EventType = (int)DecidingEventType.Lecture;
-            thirdEvent.EventType = (int)DecidingEventType.Concert;
-            fourthEvent.EventType = (int)DecidingEventType.StudySession;
-
-            firstEvent.StartDateTime = new DateTime(2020, 12, 29, 10, 00, 00);
-            secondEvent.StartDateTime = new DateTime(2021, 1, 17, 17, 00, 00);
-            thirdEvent.StartDateTime = new DateTime(2021, 1, 21, 20, 00, 00);
-            fourthEvent.StartDateTime = new DateTime(2021, 1, 25, 10, 00, 00);
-
-            firstEvent.EndDateTime = new DateTime(2020, 12, 29, 12, 00, 00);
-            secondEvent.EndDateTime = new DateTime(2021, 1, 17, 20, 00, 00);
-            thirdEvent.EndDateTime = new DateTime(2021, 1, 21, 23, 00, 00);
-            fourthEvent.EndDateTime = new DateTime(2021, 1, 25, 13, 00, 00);
-
+            var firstEvent = new Event("Kava s prijateljima", Event.DecidingEventType.Coffee, new DateTime(2020, 12, 29, 10, 00, 00), new DateTime(2020, 12, 29, 12, 00, 00));
+            var secondEvent = new Event("Predavanje na FESB-u", Event.DecidingEventType.Lecture, new DateTime(2021, 1, 17, 17, 00, 00), new DateTime(2021, 1, 17, 20, 00, 00));
+            var thirdEvent = new Event("Prljavo Kazalište u Areni", Event.DecidingEventType.Concert, new DateTime(2021, 1, 21, 20, 00, 00), new DateTime(2021, 1, 21, 23, 00, 00));
+            var fourthEvent = new Event("Repeticije", Event.DecidingEventType.StudySession, new DateTime(2021, 1, 25, 10, 00, 00), new DateTime(2021, 1, 25, 13, 00, 00));
 
             var dictionary = new Dictionary<Event, List<Person>>
             {
@@ -93,16 +77,66 @@ namespace OOP_basics
                         Console.WriteLine("Za Lecture unesite 2");
                         Console.WriteLine("Za Concert unesite 3");
                         Console.WriteLine("Za StudySession unesite 4");
-                        int number;
-                        var addingEventType = Console.ReadLine();
-                        bool success = Int32.TryParse(addingEventType, out number);
-                        while (!success)
+                        int promission = 0;
+                        var addedType = Event.DecidingEventType.NoExistingType;
+                        while (promission < 3)
                         {
-                            Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
-                            addingEventType = Console.ReadLine();
-                            success = Int32.TryParse(addingEventType, out number);
+                            int number;
+                            var addingEventType = Console.ReadLine();
+                            bool success = Int32.TryParse(addingEventType, out number);
+                            while (!success)
+                            {
+                                Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                                addingEventType = Console.ReadLine();
+                                success = Int32.TryParse(addingEventType, out number);
+                                promission = 0;
+                            }
+                            var addEventType = int.Parse(addingEventType);
+                            promission++;
+                            while (addEventType <= 0 && addEventType > 4)
+                            {
+                                Console.WriteLine("Ne postoji predloženi tip eventa. Pokušajte ponovno s dodavanjem tipa eventa.");
+                                addingEventType = Console.ReadLine();
+                                bool successful = Int32.TryParse(addingEventType, out number);
+                                while (!successful)
+                                {
+                                    Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                                    addingEventType = Console.ReadLine();
+                                    successful = Int32.TryParse(addingEventType, out number);
+                                }
+                                addEventType = int.Parse(addingEventType);
+                                promission = 0;
+
+                            }
+                            var helperType = addEventType;
+                            promission++;
+                            if (helperType == 1)
+                            {
+                                addedType = Event.DecidingEventType.Coffee;
+                                promission++;
+                            }
+                            else if (helperType == 2)
+                            {
+                                addedType = Event.DecidingEventType.Lecture;
+                                promission++;
+                            }
+                            else if (helperType == 3)
+                            {
+                                addedType = Event.DecidingEventType.Concert;
+                                promission++;
+                            }
+                            else if (helperType == 4)
+                            {
+                                addedType = Event.DecidingEventType.StudySession;
+                                promission++;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Odabrani tip ne postoji. Molimo pokušajte ponovno.");
+                                promission = 0;
+                            }
                         }
-                        var addedEventType = int.Parse(addingEventType);
+                        var addedEventType = addedType;
 
                         var a = 0;
                         while (a < 13)
@@ -331,11 +365,10 @@ namespace OOP_basics
                             a++;
                             var addedEndSeconds = 00;
 
-                            var addedEvent = new Event(addedEventName);
-                            addedEvent.EventType = addedEventType;
-                            addedEvent.StartDateTime = new DateTime(addedYear, addedMonth, addedDay, addedHour, addedMinutes, addedSeconds);
-                            addedEvent.EndDateTime = new DateTime(addedEndYear, addedEndMonth, addedEndDay, addedEndHour, addedEndMinutes, addedEndSeconds);
+                            var addedEvent = new Event(addedEventName, addedEventType, new DateTime(addedYear, addedMonth, addedDay, addedHour, addedMinutes, addedSeconds), new DateTime(addedEndYear, addedEndMonth, addedEndDay, addedEndHour, addedEndMinutes, addedEndSeconds));
+
                             var b = 0;
+
                             foreach(var pair in dictionary)
                             {
                                 if((addedEvent.StartDateTime > pair.Key.StartDateTime) && (addedEvent.StartDateTime < pair.Key.EndDateTime))
@@ -389,11 +422,8 @@ namespace OOP_basics
                             }
                             else
                             {
-                                addedEvent = new Event(addedEventName);
-                                addedEvent.EventType = addedEventType;
-                                addedEvent.StartDateTime = new DateTime(addedYear, addedMonth, addedDay, addedHour, addedMinutes, addedSeconds);
-                                addedEvent.EndDateTime = new DateTime(addedEndYear, addedEndMonth, addedEndDay, addedEndHour, addedEndMinutes, addedEndSeconds);
-
+                                addedEvent = new Event(addedEventName, addedEventType, new DateTime(addedYear, addedMonth, addedDay, addedHour, addedMinutes, addedSeconds), new DateTime(addedEndYear, addedEndMonth, addedEndDay, addedEndHour, addedEndMinutes, addedEndSeconds));
+                                
                                 var AddedEventList = new List<Person>() { };
 
                                 dictionary.Add(addedEvent, AddedEventList);
@@ -408,7 +438,7 @@ namespace OOP_basics
                         Console.WriteLine("Odabrali ste brisanje eventa. Upišite ime eventa koji želite izbrisati.");
                         var deleteEventName = Console.ReadLine();
                         var counter = 0;
-                        var rememberValue = new Event("");
+                        var rememberValue = new Event("",Event.DecidingEventType.NoExistingType,new DateTime(0,0,0,0,0,0), new DateTime(0, 0, 0, 0, 0, 0));
                         foreach(var pair in dictionary)
                         {
                             bool comparison = deleteEventName.Equals(pair.Key.Name, StringComparison.OrdinalIgnoreCase);
@@ -433,7 +463,355 @@ namespace OOP_basics
                         mainVariable = Decision();
                         break;
                     case 3:
+                        Console.WriteLine(" ");
+                        Console.WriteLine("Odabrali ste uređivanje eventa. Upišite ime eventa koji želite urediti.");
+                        var editEventName = Console.ReadLine();
+                        var count = 0;
+                        var rememberingValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(2020, 12, 4, 17, 10, 00), new DateTime(2020, 12, 5, 23, 30, 00));
+                        foreach (var pair in dictionary)
+                        {
+                            bool compare = editEventName.Equals(pair.Key.Name, StringComparison.OrdinalIgnoreCase);
+                            if (compare)
+                            {
+                                rememberingValue = pair.Key;
+                            }
+                            else
+                            {
+                                count++;
+                            }
+                        }
+                        if (count == dictionary.Count)
+                        {
+                            Console.WriteLine("Odabrani event nije pronađen.");
+                        }
+                        else
+                        {
+                            var editChoice = EditingEvent();
+                            while (editChoice > 0)
+                            {
+                                switch (editChoice)
+                                {
+                                    case 1:
+                                        Console.WriteLine("");
+                                        Console.WriteLine("Odabrali ste uređivanje imena eventa. Unesite novo ime kako želite preimenovati event.");
+                                        var renameEvent = Console.ReadLine();
+                                        rememberingValue.Name = renameEvent;
+                                        editChoice = 0;
+                                        break;
+                                    case 2:
+                                        Console.WriteLine("");
+                                        Console.WriteLine("Odabrali ste uređivanje tipa eventa. Unesite novi tip u koji želite promijeniti event.");
+                                        Console.WriteLine("Za Coffee unesite 1");
+                                        Console.WriteLine("Za Lecture unesite 2");
+                                        Console.WriteLine("Za Concert unesite 3");
+                                        Console.WriteLine("Za StudySession unesite 4");
+                                        var permissionCheck = 0;
+                                        var editedType = Event.DecidingEventType.NoExistingType;
+                                        while (permissionCheck < 3)
+                                        {
+                                            int someInteger;
+                                            var editingEventType = Console.ReadLine();
+                                            bool converting = Int32.TryParse(editingEventType, out someInteger);
+                                            while (!converting)
+                                            {
+                                                Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                                                editingEventType = Console.ReadLine();
+                                                converting = Int32.TryParse(editingEventType, out someInteger);
+                                                permissionCheck = 0;
+                                            }
+                                            var editEventType = int.Parse(editingEventType);
+                                            permissionCheck++;
+                                            while (editEventType <= 0 && editEventType > 4)
+                                            {
+                                                Console.WriteLine("Ne postoji predloženi tip eventa. Pokušajte ponovno s dodavanjem tipa eventa.");
+                                                editingEventType = Console.ReadLine();
+                                                bool convertingSuccessful = Int32.TryParse(editingEventType, out someInteger);
+                                                while (!convertingSuccessful)
+                                                {
+                                                    Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                                                    editingEventType = Console.ReadLine();
+                                                    convertingSuccessful = Int32.TryParse(editingEventType, out someInteger);
+                                                }
+                                                editEventType = int.Parse(editingEventType);
+                                                permissionCheck = 0;
+
+                                            }
+                                            var helperEditType = editEventType;
+                                            permissionCheck++;
+                                            if (helperEditType == 1)
+                                            {
+                                                editedType = Event.DecidingEventType.Coffee;
+                                                Console.WriteLine($"Tip eventa promijenjen u {Event.DecidingEventType.Coffee}");
+                                                permissionCheck++;
+                                            }
+                                            else if (helperEditType == 2)
+                                            {
+                                                editedType = Event.DecidingEventType.Lecture;
+                                                Console.WriteLine($"Tip eventa promijenjen u {Event.DecidingEventType.Lecture}");
+                                                permissionCheck++;
+                                            }
+                                            else if (helperEditType == 3)
+                                            {
+                                                editedType = Event.DecidingEventType.Concert;
+                                                Console.WriteLine($"Tip eventa promijenjen u {Event.DecidingEventType.Concert}");
+                                                permissionCheck++;
+                                            }
+                                            else if (helperEditType == 4)
+                                            {
+                                                editedType = Event.DecidingEventType.StudySession;
+                                                Console.WriteLine($"Tip eventa promijenjen u {Event.DecidingEventType.StudySession}");
+                                                permissionCheck++;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("Odabrani tip ne postoji. Molimo pokušajte ponovno.");
+                                                permissionCheck = 0;
+                                            }
+                                        }
+                                        var editedEventType = editedType;
+
+                                        rememberingValue.EventType = editedEventType;
+                                        
+                                        editChoice = 0;
+                                        break;
+
+                                    case 3:
+                                        Console.WriteLine("Odabrali ste uređivanje vremena početka eventa.");
+                                        Console.WriteLine("Unesite godinu održavanja eventa");
+                                        int numberHelper;
+                                        var editingYear = Console.ReadLine();
+                                        bool checkYear = Int32.TryParse(editingYear, out numberHelper);
+                                        while (!checkYear)
+                                        {
+                                            Console.WriteLine("Molimo upišite godinu BROJEM: ");
+                                            editingYear = Console.ReadLine();
+                                            checkYear = Int32.TryParse(editingYear, out numberHelper);
+                                        }
+                                        var editedYear = int.Parse(editingYear);
+                                        Console.WriteLine("Unesite mjesec održavanja eventa");
+                                        int helperNumber;
+                                        var editingMonth = Console.ReadLine();
+                                        bool checkMonth = Int32.TryParse(editingMonth, out helperNumber);
+                                        while (!checkMonth)
+                                        {
+                                            Console.WriteLine("Molimo upišite mjesec BROJEM: ");
+                                            editingMonth = Console.ReadLine();
+                                            checkMonth = Int32.TryParse(editingMonth, out helperNumber);
+                                        }
+                                        var editedMonth = int.Parse(editingMonth);
+                                        Console.WriteLine("Unesite dan održavanja eventa");
+                                        int helpNumber;
+                                        var editingDay = Console.ReadLine();
+                                        bool checkDay = Int32.TryParse(editingDay, out helpNumber);
+                                        while (!checkDay)
+                                        {
+                                            Console.WriteLine("Molimo upišite dan BROJEM: ");
+                                            editingDay = Console.ReadLine();
+                                            checkDay = Int32.TryParse(editingDay, out helpNumber);
+                                        }
+                                        var editedDay = int.Parse(editingDay);
+                                        Console.WriteLine("Unesite puni sat održavanja eventa");
+                                        int numberHelp;
+                                        var editingHour = Console.ReadLine();
+                                        bool checkHour = Int32.TryParse(editingHour, out numberHelp);
+                                        while (!checkHour)
+                                        {
+                                            Console.WriteLine("Molimo upišite puni sat BROJEM: ");
+                                            editingHour = Console.ReadLine();
+                                            checkHour = Int32.TryParse(editingHour, out numberHelp);
+                                        }
+                                        var editedHour = int.Parse(editingHour);
+                                        Console.WriteLine("Unesite minute održavanja eventa");
+                                        int HelpingNumber;
+                                        var editingMinutes = Console.ReadLine();
+                                        bool checkMinutes = Int32.TryParse(editingMinutes, out HelpingNumber);
+                                        while (!checkMinutes)
+                                        {
+                                            Console.WriteLine("Molimo upišite puni sat BROJEM: ");
+                                            editingMinutes = Console.ReadLine();
+                                            checkMinutes = Int32.TryParse(editingMinutes, out HelpingNumber);
+                                        }
+                                        var editedMinutes = int.Parse(editingMinutes);
+                                        var editedSeconds = 00;
+                                        rememberingValue.StartDateTime = new DateTime(editedYear, editedMonth, editedDay, editedHour, editedMinutes, editedSeconds);
+                                        var y = 0;
+                                        foreach (var pair in dictionary)
+                                        {
+                                            if ((rememberingValue.StartDateTime > pair.Key.StartDateTime) && (rememberingValue.StartDateTime < pair.Key.EndDateTime))
+                                            {
+                                                y = 0;
+                                            }
+                                            else
+                                            {
+                                                y++;
+                                            }
+                                        }
+                                        foreach (var pair in dictionary)
+                                        {
+                                            if ((rememberingValue.StartDateTime < pair.Key.StartDateTime) && (rememberingValue.EndDateTime > pair.Key.EndDateTime))
+                                            {
+                                                y = 0;
+                                            }
+                                            else
+                                            {
+                                                y++;
+                                            }
+                                        }
+                                        if (y != dictionary.Count * 2)
+                                        {
+                                            Console.WriteLine("Uređeni event se vremenom poklapa s već postojećim eventom. Molimo ponovno uredite event.");
+                                            editChoice = EditingEvent();
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Event uspješno promijenjen.");
+                                            editChoice = 0;
+                                        }
+                                        break;
+                                    case 4:
+                                        var possible = 0;
+                                        Console.WriteLine("Odabrali ste uređivanje vremena završavanja eventa.");
+                                        while (possible < 6)
+                                        {
+                                            Console.WriteLine("Unesite godinu završavanja eventa");
+                                            int helpInteger;
+                                            var editingEndYear = Console.ReadLine();
+                                            bool checkEndYear = Int32.TryParse(editingEndYear, out helpInteger);
+                                            while (!checkEndYear)
+                                            {
+                                                Console.WriteLine("Molimo upišite godinu BROJEM: ");
+                                                editingEndYear = Console.ReadLine();
+                                                checkEndYear = Int32.TryParse(editingEndYear, out helpInteger);
+                                                possible = 0;
+                                            }
+                                            var editedEndYear = int.Parse(editingEndYear);
+                                            possible++;
+
+                                            Console.WriteLine("Unesite mjesec završavanja eventa");
+                                            int integerHelp;
+                                            var editingEndMonth = Console.ReadLine();
+                                            bool checkEndMonth = Int32.TryParse(editingEndMonth, out integerHelp);
+                                            while (!checkEndMonth)
+                                            {
+                                                Console.WriteLine("Molimo upišite mjesec BROJEM: ");
+                                                editingEndMonth = Console.ReadLine();
+                                                checkEndMonth = Int32.TryParse(editingEndMonth, out integerHelp);
+                                                possible = 0;
+                                            }
+                                            var editedEndMonth = int.Parse(editingEndMonth);
+                                            possible++; 
+
+                                            Console.WriteLine("Unesite dan završavanja eventa");
+                                            int integerSome;
+                                            var editingEndDay = Console.ReadLine();
+                                            bool checkEndDay = Int32.TryParse(editingEndDay, out integerSome);
+                                            while (!checkEndDay)
+                                            {
+                                                Console.WriteLine("Molimo upišite dan BROJEM: ");
+                                                editingEndDay = Console.ReadLine();
+                                                checkEndDay = Int32.TryParse(editingEndDay, out integerSome);
+                                                possible = 0;
+                                            }
+                                            var editedEndDay = int.Parse(editingEndDay);
+                                            possible++;
+
+                                            Console.WriteLine("Unesite puni sat završavanja eventa");
+                                            int someHelpInteger;
+                                            var editingEndHour = Console.ReadLine();
+                                            bool checkEndHour = Int32.TryParse(editingEndHour, out someHelpInteger);
+                                            while (!checkEndHour)
+                                            {
+                                                Console.WriteLine("Molimo upišite puni sat BROJEM: ");
+                                                editingEndHour = Console.ReadLine();
+                                                checkEndHour = Int32.TryParse(editingEndHour, out someHelpInteger);
+                                                possible = 0;
+                                            }
+                                            var editedEndHour = int.Parse(editingEndHour);
+                                            possible++;
+
+                                            Console.WriteLine("Unesite minute završavanja eventa");
+                                            int helpSomeInteger;
+                                            var editingEndMinutes = Console.ReadLine();
+                                            bool checkEndMinutes = Int32.TryParse(editingEndMinutes, out helpSomeInteger);
+                                            while (!checkEndMinutes)
+                                            {
+                                                Console.WriteLine("Molimo upišite puni sat BROJEM: ");
+                                                editingEndMinutes = Console.ReadLine();
+                                                checkEndMinutes = Int32.TryParse(editingEndMinutes, out helpSomeInteger);
+                                                possible = 0;
+                                            }
+                                            var editedEndMinutes = int.Parse(editingEndMinutes);
+                                            var editedEndSeconds = 00;
+                                            possible++;
+
+                                            rememberingValue.EndDateTime = new DateTime(editedEndYear, editedEndMonth, editedEndDay, editedEndHour, editedEndMinutes, editedEndSeconds);
+
+                                            if(rememberingValue.EndDateTime < rememberingValue.StartDateTime)
+                                            {
+                                                possible = 0;
+                                                Console.WriteLine("Event ne može završiti prije no što počne. Molimo unesite ponovno vrijeme završavanja eventa.");
+                                            }
+                                            else
+                                            {
+                                                possible++;
+                                            }
+                                        }
+                                        var x = 0;
+                                        foreach (var pair in dictionary)
+                                        {
+                                            if ((rememberingValue.EndDateTime > pair.Key.StartDateTime) && (rememberingValue.EndDateTime < pair.Key.EndDateTime))
+                                            {
+                                                x = 0;
+                                            }
+                                            else
+                                            {
+                                                x++;
+                                            }
+                                        }
+                                        foreach (var pair in dictionary)
+                                        {
+                                            if ((rememberingValue.StartDateTime < pair.Key.StartDateTime) && (rememberingValue.EndDateTime > pair.Key.EndDateTime))
+                                            {
+                                                x = 0;
+                                            }
+                                            else
+                                            {
+                                                x++;
+                                            }
+                                        }
+                                        if (x != dictionary.Count * 2)
+                                        {
+                                            Console.WriteLine("Uređeni event se vremenom poklapa s već postojećim eventom. Molimo ponovno uredite event.");
+                                            editChoice = EditingEvent();
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Event uspješno promijenjen.");
+                                            editChoice = 0;
+                                        }
+                                        break;
+                                    case 5:
+                                        editChoice = 999;
+                                        break;
+                                    default:
+                                        Console.WriteLine("Odabrani broj ne postoji u izborniku.");
+                                        editChoice = EditingEvent();
+                                        break;
+                                }
+                                if (editChoice == 999)
+                                {
+                                    break;
+                                }
+                                editChoice = EditingEvent();
+                                if (editChoice == 5)
+                                {
+                                    break;
+                                }
+                            }
+                            mainVariable = Decision();
+                        }
                         break;
+
                     case 4:
                         break;
                     case 5:
@@ -489,13 +867,6 @@ namespace OOP_basics
 
         }
 
-        enum DecidingEventType
-        {
-            Coffee = 1,
-            Lecture = 2,
-            Concert = 3,
-            StudySession = 4
-        }
 
         static int Menu()
         {
@@ -560,6 +931,29 @@ namespace OOP_basics
                 return finalDecision;
             }
 
+        }
+
+        static int EditingEvent()
+        {
+            Console.WriteLine(" ");
+            Console.WriteLine("Odaberite stavku eventa koju želite urediti");
+            Console.WriteLine("1 - Urediti ime eventa");
+            Console.WriteLine("2 - Urediti tip eventa");
+            Console.WriteLine("3 - Urediti vrijeme početka eventa");
+            Console.WriteLine("4 - Urediti vrijeme kraja eventa");
+            Console.WriteLine("5 - Povratak na glavni izbornik");
+            int someNumberValue;
+            var choiceOfEditAction = Console.ReadLine();
+            bool conversion = Int32.TryParse(choiceOfEditAction, out someNumberValue);
+            while (!conversion)
+            {
+                Console.WriteLine("Molimo upišite BROJ akcije koju želite odabrati: ");
+                choiceOfEditAction = Console.ReadLine();
+                conversion = Int32.TryParse(choiceOfEditAction, out int someNumberVaue);
+            }
+            var finalChoiceOfEditAction = int.Parse(choiceOfEditAction);
+
+            return finalChoiceOfEditAction;
         }
 
     }
