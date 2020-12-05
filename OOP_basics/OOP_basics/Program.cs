@@ -7,18 +7,18 @@ namespace OOP_basics
     {
         static void Main(string[] args)
         {
-            var firstPerson = new Person("Ernest", "Hemingway", 111, 000);
-            var secondPerson = new Person("Marko", "Marulić", 112, 001);
-            var thirdPerson = new Person("Dobriša", "Cesarić", 113, 002);
-            var fourthPerson = new Person("William", "Shakespeare", 114, 003);
-            var fifthPerson = new Person("Pablo", "Neruda", 115, 004);
-            var sixthPerson = new Person("Fjodor", "Mihajlovič Dostojevski", 116, 005);
-            var seventhPerson = new Person("Alber", "Camus", 117, 006);
-            var eighthPerson = new Person("Charles", "Dickens", 118, 007);
-            var ninthPerson = new Person("Petar", "Preradović", 119, 008);
-            var tenthPerson = new Person("Victor", "Hugo", 120, 009);
-            var eleventhPerson = new Person("Miroslav", "Krleža", 121, 010);
-            var twelfthPerson = new Person("Tin", "Ujević", 122, 011);
+            var firstPerson = new Person("Ernest", "Hemingway", 111, 56466);
+            var secondPerson = new Person("Marko", "Marulić", 112, 658497);
+            var thirdPerson = new Person("Dobriša", "Cesarić", 113, 512004);
+            var fourthPerson = new Person("William", "Shakespeare", 114, 781475);
+            var fifthPerson = new Person("Pablo", "Neruda", 115, 562787);
+            var sixthPerson = new Person("Fjodor", "Mihajlovič Dostojevski", 116, 777005);
+            var seventhPerson = new Person("Alber", "Camus", 117, 784556);
+            var eighthPerson = new Person("Charles", "Dickens", 118, 170007);
+            var ninthPerson = new Person("Petar", "Preradović", 119, 748508);
+            var tenthPerson = new Person("Victor", "Hugo", 120, 784909);
+            var eleventhPerson = new Person("Miroslav", "Krleža", 121, 101010);
+            var twelfthPerson = new Person("Tin", "Ujević", 122, 111111);
 
             var CoffeeList = new List<Person>() { firstPerson, secondPerson, thirdPerson };
             var LectureList = new List<Person>() { fourthPerson, fifthPerson, sixthPerson };
@@ -894,30 +894,13 @@ namespace OOP_basics
                             addPhoneNumber = Console.ReadLine();
                             checkingPhone = Int32.TryParse(addPhoneNumber, out some);
                         }
-                        var addedPhoneNumber = addPhoneNumber;
+                        var addedPhoneNumber = int.Parse(addPhoneNumber);
                         Console.WriteLine("Upišite ime eventa na koji želite dodati osobu");
                         var chooseEvent = Console.ReadLine();
-                        var control = 0;
-                        while (control < 1)
-                        {
-                            foreach (var pair in dictionary)
-                            {
-                                bool findingEvent = pair.Key.Name.Equals(chooseEvent, StringComparison.OrdinalIgnoreCase);
-                                while (!findingEvent)
-                                {
-                                    Console.WriteLine("Event nije pronađen. Molimo pokušajte ponovno");
-                                    chooseEvent = Console.ReadLine();
-                                    findingEvent = pair.Key.Name.Equals(chooseEvent, StringComparison.OrdinalIgnoreCase);
-                                    control = 0;
-                                }
-                            }
-                            control++;
-                        }
-                        var choosenEvent = chooseEvent;
-                        var saveValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(1000, 1, 1, 1, 1, 00), new DateTime(1000, 1, 1, 1, 1, 01))
+                        var saveValue = new Event("", Event.DecidingEventType.NoExistingType, new DateTime(1000, 1, 1, 1, 1, 00), new DateTime(1000, 1, 1, 1, 1, 01));
                         foreach (var pair in dictionary)
                         {
-                            bool findEvent = pair.Key.Name.Equals(choosenEvent, StringComparison.OrdinalIgnoreCase);
+                            bool findEvent = pair.Key.Name.Equals(chooseEvent, StringComparison.OrdinalIgnoreCase);
                             if (findEvent)
                             {
                                 saveValue = pair.Key;
@@ -960,10 +943,10 @@ namespace OOP_basics
                                 removeOIB = Console.ReadLine();
                                 checkingValidOIB = Int32.TryParse(removeOIB, out integerValue);
                             }
-                            var removedOIB = removeOIB;
+                            var removedOIB =int.Parse(removeOIB);
                             var deletePerson = 0;
                             var countHelp = 0;
-                            for (var i = 0, i< dictionary[savingValue].Count , i++)
+                            for (var i = 0; i< dictionary[savingValue].Count; i++)
                             {
                                 if (dictionary[savingValue][i].OIB == removedOIB)
                                 {
@@ -996,6 +979,7 @@ namespace OOP_basics
                                 case 1:
                                     Console.WriteLine("Odaberite ime eventa čije detalje želite vidjeti");
                                     var detail = Console.ReadLine();
+                                    var additionalVariable = 0;
                                     foreach(var pair in dictionary)
                                     {
                                         bool equal = pair.Key.Name.Equals(detail, StringComparison.OrdinalIgnoreCase);
@@ -1005,47 +989,61 @@ namespace OOP_basics
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Event nije pronađen");
+                                            additionalVariable++;
                                         }
+                                    }
+                                    if (additionalVariable== dictionary.Count)
+                                    {
+                                        Console.WriteLine("Event nije pronađen");
                                     }
                                     break;
                                 case 2:
                                     Console.WriteLine("Odaberite ime eventa čije uzvanike želite vidjeti");
                                     var guests = Console.ReadLine();
+                                    var additionalHelp = 0;
                                     foreach (var pair in dictionary)
                                     {
                                         bool equality = pair.Key.Name.Equals(guests, StringComparison.OrdinalIgnoreCase);
                                         if (equality)
                                         {
-                                            for ( var i=1; i < pair.Value.Count+1; i++)
+                                            for ( var i=0; i < pair.Value.Count; i++)
                                             {
-                                                Console.WriteLine($"{i} - {pair.Value[i].FirstName} - {pair.Value[i].LastName} - {pair.Value[i].PhoneNumber}");
+                                                Console.WriteLine($"{i+1} - {pair.Value[i].FirstName} - {pair.Value[i].LastName} - {pair.Value[i].PhoneNumber}");
                                             }
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Event nije pronađen");
+                                            additionalHelp++;
                                         }
+                                    }
+                                    if (additionalHelp == dictionary.Count)
+                                    {
+                                        Console.WriteLine("Event nije pronađen");
                                     }
                                     break;
                                 case 3:
                                     Console.WriteLine("Odaberite ime eventa čije detalje i popis uzvanika želite vidjeti");
                                     var details = Console.ReadLine();
+                                    var helpAdditional = 0;
                                     foreach (var pair in dictionary)
                                     {
                                         bool equals = pair.Key.Name.Equals(details, StringComparison.OrdinalIgnoreCase);
                                         if (equals)
                                         {
                                             Console.WriteLine(pair.Key.Name + " - " + pair.Key.EventType + " - " + pair.Key.StartDateTime +" - " + pair.Key.EndDateTime + " - " + (pair.Key.EndDateTime - pair.Key.StartDateTime) + " - " + pair.Value.Count);
-                                            for (var i = 1; i < pair.Value.Count + 1; i++)
+                                            for (var i = 0; i < pair.Value.Count; i++)
                                             {
-                                                Console.WriteLine($"{i} - {pair.Value[i].FirstName} - {pair.Value[i].LastName} - {pair.Value[i].PhoneNumber}");
+                                                Console.WriteLine($"{i+1} - {pair.Value[i].FirstName} - {pair.Value[i].LastName} - {pair.Value[i].PhoneNumber}");
                                             }
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Event nije pronađen");
+                                            helpAdditional++;
                                         }
+                                    }
+                                    if (helpAdditional == dictionary.Count)
+                                    {
+                                        Console.WriteLine("Event nije pronađen");
                                     }
                                     break;
                                 case 4:
@@ -1115,6 +1113,8 @@ namespace OOP_basics
 
         static int AdditionalMenu()
         {
+            Console.WriteLine("");
+            Console.WriteLine("Podizbornik");
             Console.WriteLine("1 - Ispis detalja eventa");
             Console.WriteLine("2 - Popis osoba na eventu");
             Console.WriteLine("3 - Ispis detalja eventa i popis osoba tog eventa");
